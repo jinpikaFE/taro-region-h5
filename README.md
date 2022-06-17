@@ -3,6 +3,7 @@
 - 因为taro picker组件 mode='region' 对于h5实际不兼容，因此通过 multiSelector 进行封装
 - 数据来源高德api
 - 数据类似region.ts 该组件使用接口请求获取数据，可自行改为region中的数据
+- 如果多端开发，为了省市区数据适配，亦可小程序使用该组件
 
 ## 修改数据重点位置
 
