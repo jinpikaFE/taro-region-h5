@@ -160,7 +160,6 @@ const RegionPicker: FC<TRegionPicker> = (props) => {
 
   return (
     <View className={styles.container}>
-      {JSON.stringify(regionData)}
       <Picker
         mode="multiSelector"
         range={[...regionData]}
