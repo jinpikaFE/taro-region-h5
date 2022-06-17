@@ -47,14 +47,20 @@ const RegionPicker: FC<TRegionPicker> = (props) => {
       }
       range.push(temp);
       temp = [];
-      for (let i = 0; i < regionAllTemp?.[0]?.districts?.length; i++) {
+      for (
+        let i = 0;
+        i < regionAllTemp?.[regionValue?.[0]]?.districts?.length;
+        i++
+      ) {
         temp.push(regionAllTemp?.[regionValue?.[0]]?.districts?.[i]?.name);
       }
       range.push(temp);
       temp = [];
       for (
         let i = 0;
-        i < regionAllTemp?.[0]?.districts?.[0]?.districts?.length;
+        i <
+        regionAllTemp?.[regionValue?.[0]]?.districts?.[regionValue?.[1]]
+          ?.districts?.length;
         i++
       ) {
         temp.push(
@@ -154,9 +160,10 @@ const RegionPicker: FC<TRegionPicker> = (props) => {
 
   return (
     <View className={styles.container}>
+      {JSON.stringify(regionData)}
       <Picker
         mode="multiSelector"
-        range={regionData}
+        range={[...regionData]}
         value={regionValue}
         onChange={(e) => {
           setRegionText(
