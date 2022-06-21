@@ -22,7 +22,7 @@ export type TRegionPicker = {
 };
 
 const RegionPicker: FC<TRegionPicker> = (props) => {
-  const { onReigonChange, initialValues = [0, 0, 0] } = props;
+  const { onReigonChange, initialValues = [] } = props;
 
   /** 高德省市区全部数据 */
   const [regionAll, setRegionAll] = useState<any[]>([]);
@@ -49,45 +49,55 @@ const RegionPicker: FC<TRegionPicker> = (props) => {
       temp = [];
       for (
         let i = 0;
-        i < regionAllTemp?.[regionValue?.[0]]?.districts?.length;
+        i < regionAllTemp?.[regionValue?.[0] || 0]?.districts?.length;
         i++
       ) {
-        temp.push(regionAllTemp?.[regionValue?.[0]]?.districts?.[i]?.name);
+        temp.push(regionAllTemp?.[regionValue?.[0] || 0]?.districts?.[i]?.name);
       }
       range.push(temp);
       temp = [];
       for (
         let i = 0;
         i <
-        regionAllTemp?.[regionValue?.[0]]?.districts?.[regionValue?.[1]]
-          ?.districts?.length;
+        regionAllTemp?.[regionValue?.[0] || 0]?.districts?.[
+          regionValue?.[1] || 0
+        ]?.districts?.length;
         i++
       ) {
         temp.push(
-          regionAllTemp?.[regionValue?.[0]]?.districts?.[regionValue?.[1]]
-            ?.districts[i]?.name,
+          regionAllTemp?.[regionValue?.[0] || 0]?.districts?.[
+            regionValue?.[1] || 0
+          ]?.districts[i]?.name,
         );
       }
       range.push(temp);
       setRegionData(range);
       const tempObjArr = [
-        { ...regionAllTemp?.[regionValue?.[0]], index: regionValue?.[0] },
         {
-          ...regionAllTemp?.[regionValue?.[0]]?.districts?.[regionValue?.[1]],
-          index: regionValue?.[1],
+          ...regionAllTemp?.[regionValue?.[0] || 0],
+          index: regionValue?.[0] || 0,
         },
         {
-          ...regionAllTemp?.[regionValue?.[0]]?.districts?.[regionValue?.[1]]
-            ?.districts?.[regionValue?.[2]],
-          index: regionValue?.[2],
+          ...regionAllTemp?.[regionValue?.[0] || 0]?.districts?.[
+            regionValue?.[1] || 0
+          ],
+          index: regionValue?.[1] || 0,
+        },
+        {
+          ...regionAllTemp?.[regionValue?.[0] || 0]?.districts?.[
+            regionValue?.[1] || 0
+          ]?.districts?.[regionValue?.[2] || 0],
+          index: regionValue?.[2] || 0,
         },
       ];
 
       setRegionValObjArr(tempObjArr);
       setRegionText(
-        `${tempObjArr?.[0]?.name || ''} ${tempObjArr?.[1]?.name || ''} ${
-          tempObjArr?.[2]?.name || ''
-        }`,
+        regionValue?.length > 0
+          ? `${tempObjArr?.[0]?.name || ''} ${tempObjArr?.[1]?.name || ''} ${
+              tempObjArr?.[2]?.name || ''
+            }`
+          : '',
       );
     }
   }, []);
@@ -165,14 +175,13 @@ const RegionPicker: FC<TRegionPicker> = (props) => {
         range={[...regionData]}
         value={regionValue}
         onChange={(e) => {
-          setRegionText(
-            `${regionValObjArr?.[0]?.name || ''} ${
-              regionValObjArr?.[1]?.name || ''
-            } ${regionValObjArr?.[2]?.name || ''}`,
-          );
+          const tempRegionText = `${regionValObjArr?.[0]?.name || ''} ${
+            regionValObjArr?.[1]?.name || ''
+          } ${regionValObjArr?.[2]?.name || ''}`;
+          setRegionText(tempRegionText);
           onReigonChange(e, {
-            regionValue,
-            regionText,
+            regionValue: e.detail?.value,
+            regionText: tempRegionText,
             regionValObjArr,
           });
         }}
